@@ -109,12 +109,11 @@ void VL6180x::VL6180xDefautSettings(void){
   VL6180x_setRegister(VL6180X_SYSALS_ANALOGUE_GAIN,0x40);
   VL6180x_setRegister(VL6180X_FIRMWARE_RESULT_SCALER,0x01);
   
-  //Range Scaler set to 2, for 0-40cm @sigmunjs 8.8.16
+  //Range Scaler set to 2, for 0-40cm @Heftie 8.8.16
   // Offset must be modify with the scaler, start up Value is for Scaler = x1, new Value calculated by dividing by the Scaler(2 or 3)
   VL6180x_setRegister(VL6180X_SYSRANGE_PART_TO_PART_RANGE_OFFSET, (VL6180x_getRegister(VL6180X_SYSRANGE_PART_TO_PART_RANGE_OFFSET)/2));
   // Scaler Lookup table: x1 = 253, x2 = 127, x3 = 84
   VL6180x_setRegister16bit(VL6180X_RANGE_SCALER, 127);
-  // until here
 }
 void VL6180x::getIdentification(struct VL6180xIdentification *temp){
 
@@ -142,6 +141,7 @@ uint8_t VL6180x::changeAddress(uint8_t old_address, uint8_t new_address){
    return VL6180x_getRegister(VL6180X_I2C_SLAVE_DEVICE_ADDRESS); 
 }
   
+  // adjusted to work with range scaler @Heftie 8.8.16
 uint16_t VL6180x::getDistance(){
   uint8_t rangeValue = 0;
   VL6180x_setRegister(VL6180X_SYSRANGE_START, 0x01); //Start Single shot mode
